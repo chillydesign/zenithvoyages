@@ -482,7 +482,7 @@ function revcon_change_post_object() {
     $labels->menu_name = 'News';
     $labels->name_admin_bar = 'News';
 }
- 
+
 add_action( 'admin_menu', 'revcon_change_post_label' );
 add_action( 'init', 'revcon_change_post_object' );
 
@@ -500,14 +500,14 @@ function search_filter($query) {
 
 function get_page_siblings($id){
     global $wpdb;
-    $search_id = ( wp_get_post_parent_id(  $id   ) > 0  ) ? wp_get_post_parent_id( $id ) :  $id ;  
-    $siblings = $wpdb->get_results( 
-        "SELECT ID, post_title 
+    $search_id = ( wp_get_post_parent_id(  $id   ) > 0  ) ? wp_get_post_parent_id( $id ) :  $id ;
+    $siblings = $wpdb->get_results(
+        "SELECT ID, post_title
         FROM $wpdb->posts
         WHERE ID = $search_id
         OR post_parent = $search_id
-        AND post_type = 'page' 
-        AND post_status = 'publish' 
+        AND post_type = 'page'
+        AND post_status = 'publish'
        ORDER BY post_parent ASC, post_date DESC
 
         "
@@ -539,14 +539,14 @@ function remove_menus(){
   remove_menu_page( 'tools.php' );                  //Tools
   remove_menu_page( 'options-general.php' );        //Settings
   remove_menu_page( 'profile.php' );        //Settings
-  
+
 }
 add_action( 'admin_menu', 'remove_menus' );
 
 add_filter('acf/settings/show_admin', '__return_false');
 
 function remove_wpcf7() {
-    //remove_menu_page( 'wpcf7' ); 
+    //remove_menu_page( 'wpcf7' );
 }
 //add_action( 'admin_menu', 'remove_menus' );
 add_action('admin_menu', 'remove_wpcf7');
@@ -573,6 +573,9 @@ function social_meta_properties(){
         $smp->title = get_the_title();
         $smp->description = $excerpt;
         $smp->image =  thumbnail_of_post_url( $post_id, 'large' );
+        if ($smp->image == '') {
+            $smp->image =   get_template_directory_uri() . '/img/trans.png';
+        }
         $smp->url = get_the_permalink();
 
     } else {
